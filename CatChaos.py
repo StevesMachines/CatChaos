@@ -4,8 +4,30 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
 
-# Load user data
-df = pd.read_csv("your_cat_data.csv")
+import os
+import pandas as pd
+
+csv_filename = "/Users/stevelowe/Documents/your_cat_data.csv"
+
+# If the file doesn't exist, create it
+if not os.path.exists(csv_filename):
+    print(f"❌ '{csv_filename}' not found! Creating a new one...")
+
+    data = {
+        "Time of Day": ["Morning", "Night", "Afternoon", "Evening"],
+        "Cat Mood": ["Hyper", "Sleepy", "Playful", "Angry"],
+        "Surface": ["Table", "Shelf", "Counter", "Desk"],
+        "Human Activity": ["Ignoring Cat", "Watching Netflix", "Cooking", "On Zoom Call"],
+        "Object Type": ["Coffee Mug", "Picture Frame", "Spice Jar", "Laptop"]
+    }
+
+    df = pd.DataFrame(data)
+    df.to_csv(csv_filename, index=False)
+    print(f"✅ Created '{csv_filename}' successfully!")
+
+# Load the CSV
+df = pd.read_csv(csv_filename)
+print(f"📂 Loaded dataset with {len(df)} records.")
 
 # Encode categorical data
 encoder_dict = {}
