@@ -4,10 +4,23 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
 
-# Load dataset
-csv_filename = "your_cat_data.csv"
-df = pd.read_csv(csv_filename)
+import pandas as pd
 
+# Use the full file path instead of a relative one
+csv_filename = "/Users/stevelowe/Documents/your_cat_data.csv"
+
+# Try to load the dataset
+try:
+    df = pd.read_csv(csv_filename)
+    print(f"✅ Successfully loaded dataset: {len(df)} records.")
+except FileNotFoundError:
+    print(f"❌ Error: The file '{csv_filename}' was not found!")
+except Exception as e:
+    print(f"❌ Unexpected error: {e}")
+
+# Load CSV file
+df = pd.read_csv(csv_filename)
+print(f"📂 Loaded dataset with {len(df)} records.")
 # Encode categorical data
 encoder_dict = {}
 for col in df.columns[:-1]:  
@@ -42,9 +55,6 @@ if st.button("Predict Chaos"):
         "Human Activity": [encoder_dict["Human Activity"].transform([human_activity])[0]],
     })
 
-    prediction = clf.predict(input_data)
-    predicted_object = target_encoder.inverse_transform(prediction)[0]
-    st.success(f"🔮 Your cat is about to knock over... **{predicted_object}**! 🐱💥")
     prediction = clf.predict(input_data)
     predicted_object = target_encoder.inverse_transform(prediction)[0]
     st.success(f"🔮 Your cat is about to knock over... **{predicted_object}**! 🐱💥")
